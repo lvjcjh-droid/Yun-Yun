@@ -1,0 +1,1026 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Document</title>
+</head>
+<body>
+    <!DOCTYPE html>
+<html lang="es">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Yun-Yun - Auténtica Comida Japonesa</title>
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+    <style>
+        :root {
+            --color-primary: #d90000;
+            --color-secondary: #333333;
+            --color-accent: #ff5252;
+            --color-light: #f9f9f9;
+            --color-dark: #222;
+            --font-title: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+            --font-text: 'Helvetica Neue', Arial, sans-serif;
+        }
+
+        /* ---- FIX: ensure anchored sections are not hidden behind the sticky nav ---- */
+        html {
+            scroll-behavior: smooth;
+            /* ajuste según altura real del nav */
+            scroll-padding-top: 72px;
+        }
+
+        /* fallback: aplica margen de desplazamiento a secciones */
+        section[id], .menu-category {
+            scroll-margin-top: 72px;
+        }
+
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }
+
+        body {
+            font-family: var(--font-text);
+            color: var(--color-secondary);
+            background-color: var(--color-light);
+            line-height: 1.5;
+            font-size: 16px;
+        }
+
+        /* header / nav */
+        header {
+            background: linear-gradient(rgba(0,0,0,0.7), rgba(0,0,0,0.7)), url('https://images.pexels.com/photos/8951563/pexels-photo-8951563.jpeg?auto=compress&cs=tinysrgb&w=1260&h=750&dpr=1') center/cover no-repeat;
+            color: white;
+            text-align: center;
+            padding: 2rem 1rem;
+        }
+        .logo { font-family: var(--font-title); font-size: 3.2rem; font-weight: 800; margin-bottom: .75rem; color: white; text-shadow: 2px 2px 6px rgba(0,0,0,0.45); }
+        .tagline { font-size: 1rem; margin-bottom: 1.25rem; max-width: 800px; margin-left: auto; margin-right: auto; }
+
+        nav {
+            background-color: var(--color-primary);
+            padding: 0.7rem 0;
+            position: sticky;
+            top: 0;
+            z-index: 1000;
+        }
+        nav ul {
+            display: flex;
+            justify-content: center;
+            list-style: none;
+            flex-wrap: wrap;
+            gap: 0.6rem;
+        }
+        nav li { margin: 0 0.6rem; }
+        nav a {
+            color: white;
+            text-decoration: none;
+            font-weight: 700;
+            font-size: 1rem;
+            padding: 0.45rem 0.6rem;
+            display: inline-block;
+            border-radius: 6px;
+        }
+        nav a:hover { background: rgba(255,255,255,0.08); color: #fffde7; }
+
+        .container { max-width: 1200px; margin: 0 auto; padding: 1.5rem 1rem; }
+
+        .section-title { text-align: center; font-family: var(--font-title); font-size: 2rem; margin-bottom: 1.25rem; color: var(--color-primary); position: relative; padding-bottom: .5rem; }
+        .section-title::after { content:""; position: absolute; bottom: 0; left: 50%; transform: translateX(-50%); width: 80px; height: 3px; background-color: var(--color-primary); border-radius:2px; }
+
+        .about { background: #fff; border-radius: 10px; padding: 1.25rem; box-shadow: 0 6px 18px rgba(0,0,0,0.06); margin-bottom: 1.5rem; }
+
+        /* grid for menu items - more compact and flexible */
+        .menu-category { margin-bottom: 1.75rem; }
+        .category-title { font-family: var(--font-title); font-size: 1.15rem; color: var(--color-primary); margin-bottom: .9rem; border-left: 4px solid var(--color-primary); padding-left: .8rem; }
+
+        .menu-items {
+            display: grid;
+            grid-template-columns: repeat(auto-fill, minmax(240px, 1fr));
+            gap: 1rem;
+            align-items: stretch;
+        }
+
+        .menu-item {
+            display: flex;
+            flex-direction: column;
+            background: #fff;
+            border-radius: 8px;
+            box-shadow: 0 6px 18px rgba(0,0,0,0.06);
+            overflow: hidden;
+            transition: transform .22s ease, box-shadow .22s ease;
+        }
+        .menu-item:hover { transform: translateY(-6px); box-shadow: 0 10px 28px rgba(0,0,0,0.08); }
+
+        .menu-item-img {
+            height: 160px;
+            background-color: #f5f5f5;
+            background-position: center;
+            background-size: cover;
+            flex-shrink: 0;
+        }
+
+        /* content area uses column flex so prices can align to bottom */
+        .menu-item-content {
+            padding: 1rem;
+            display: flex;
+            flex-direction: column;
+            gap: .6rem;
+            min-height: 110px;
+        }
+
+        .menu-item-title { font-family: var(--font-title); font-size: 1.05rem; margin-bottom: .25rem; color: var(--color-secondary); }
+        .menu-item-desc {
+            color: #666;
+            font-size: .95rem;
+            line-height: 1.35;
+            white-space: normal;
+            word-break: break-word;
+            margin-bottom: .25rem;
+        }
+
+        /* price(s) alignment */
+        .menu-item-price {
+            font-weight: 700;
+            color: var(--color-primary);
+            font-size: 1rem;
+            /* push to the right / bottom of the flex column */
+            align-self: flex-end;
+            white-space: nowrap;
+        }
+        /* if price text is long on small screens allow wrap and full width right aligned */
+        @media (max-width: 420px) {
+            .menu-item-price {
+                white-space: normal;
+                width: 100%;
+                text-align: right;
+                align-self: stretch;
+            }
+        }
+
+        /* multi-column description blocks (kushiages etc.) keep readable */
+        .menu-item-desc-columns { display:flex; gap:.8rem; margin-bottom:.6rem; }
+        .menu-item-desc-columns > div { flex: 1; display:flex; flex-direction:column; gap:.35rem; }
+        .menu-item-desc-columns p { margin:0; font-size:.95rem; color:#555; }
+
+        /* Yakimeshi special */
+        .yakimeshi-horizontal { display:flex; gap:1rem; background:#fff; border-radius:10px; box-shadow: 0 6px 18px rgba(0,0,0,0.06); margin:1.25rem 0; padding:1rem; align-items:flex-start; }
+        .yakimeshi-img { width:160px; height:160px; background-size:cover; background-position:center; border-radius:8px; flex-shrink:0; }
+        .yakimeshi-content { flex:1; display:flex; flex-direction:column; gap:.5rem; }
+        .yakimeshi-title { font-family: var(--font-title); font-size:1.1rem; color: var(--color-primary); }
+        .yakimeshi-desc { color:#666; }
+        .yakimeshi-columns { display:flex; gap:1rem; flex-wrap:wrap; }
+        .yakimeshi-columns > div { flex:1; min-width:160px; }
+        .yakimeshi-columns p { display:flex; justify-content:space-between; align-items:center; padding-left:1.2em; position:relative; margin:0 0 .4rem 0; font-size:.98rem; gap:.6rem; }
+        .yakimeshi-columns p::before { content:"•"; position:absolute; left:0; color:var(--color-primary); }
+
+        /* drinks / extras grid */
+        .drinks-grid { display:grid; grid-template-columns: repeat(auto-fill, minmax(180px, 1fr)); gap: .9rem; margin-top: .6rem; }
+        .drink-item { background:#fff; padding:.9rem; border-radius:8px; box-shadow: 0 6px 18px rgba(0,0,0,0.04); }
+        .drink-name { font-weight:700; color:var(--color-primary); margin-bottom:.35rem; font-size:1rem; }
+        .drink-price { color:var(--color-secondary); }
+
+        /* footer / maps */
+        .map-container iframe { width:100%; height:320px; border:0; }
+
+        /* --- Promotions: prettier cards for promos --- */
+        .promo-banner {
+            background: linear-gradient(180deg, #fffaf6 0%, #fff8f2 50%, #fffefc 100%);
+            border-radius: 12px;
+            padding: 1.25rem;
+            box-shadow: 0 8px 30px rgba(217,0,0,0.06);
+            margin-bottom: 1.5rem;
+        }
+        .promo-intro { text-align:center; margin-bottom: 1rem; }
+        .promo-intro .promo-title { font-family: var(--font-title); font-size:1.6rem; color:var(--color-primary); margin-bottom:.35rem; }
+        .promo-intro p { color:#666; max-width:760px; margin:0.35rem auto 0; }
+
+        .promo-grid {
+            display:grid;
+            grid-template-columns: repeat(auto-fit, minmax(220px, 1fr));
+            gap: 1rem;
+            margin-top: .9rem;
+        }
+        .promo-card {
+            background:#fff;
+            border-radius:10px;
+            padding: .9rem;
+            display:flex;
+            gap:.75rem;
+            align-items:flex-start;
+            box-shadow: 0 6px 18px rgba(0,0,0,0.04);
+            border-left: 4px solid rgba(217,0,0,0.12);
+        }
+        .promo-icon {
+            width:48px; height:48px; display:flex; align-items:center; justify-content:center;
+            border-radius:8px;
+            background: linear-gradient(135deg, rgba(217,0,0,0.12), rgba(255,82,82,0.06));
+            color: var(--color-primary);
+            font-size:1.25rem;
+            flex-shrink:0;
+        }
+        .promo-body { flex:1; }
+        .promo-title-sm { font-weight:700; color:var(--color-secondary); margin-bottom:.25rem; font-size:1rem; }
+        .promo-text { color:#666; font-size:.95rem; }
+        .promo-meta { margin-top:.5rem; display:flex; gap:.5rem; align-items:center; }
+        .promo-badge {
+            margin-left:auto;
+            background: var(--color-accent);
+            color: #fff;
+            padding: .25rem .5rem;
+            border-radius:999px;
+            font-weight:700;
+            font-size:.85rem;
+        }
+
+        /* responsive tweaks for promo */
+        @media (max-width:600px) {
+            .promo-intro .promo-title { font-size:1.35rem; }
+            .promo-card { padding:.8rem; gap:.6rem; }
+            .promo-icon { width:44px; height:44px; font-size:1.05rem; }
+        }
+
+        /* Footer styling */
+        footer {
+            background:#fff;
+            padding:1.25rem;
+            text-align:center;
+            margin-top:2rem;
+            border-top: 1px solid rgba(0,0,0,0.04);
+        }
+        footer h3 { margin-bottom:.35rem; color:var(--color-primary); font-family:var(--font-title); }
+        .social-icons { display:flex; gap:.6rem; justify-content:center; margin: .6rem 0; }
+        .social-icons a { color: var(--color-secondary); font-size:1.1rem; background:#fff; padding:.45rem; border-radius:6px; display:inline-flex; align-items:center; justify-content:center; box-shadow: 0 4px 12px rgba(0,0,0,0.03); }
+        .social-icons a:hover { transform: translateY(-3px); }
+
+        /* small screens adjustments */
+        @media (max-width: 900px) {
+            .logo { font-size: 2.6rem; }
+            .section-title { font-size: 1.6rem; }
+            .menu-items { grid-template-columns: repeat(auto-fill, minmax(220px, 1fr)); gap: .9rem; }
+            .menu-item-img { height: 140px; }
+            .yakimeshi-img { width:140px; height:140px; }
+        }
+
+        @media (max-width: 600px) {
+            body { font-size: 15px; }
+            nav a { font-size: .95rem; padding:.35rem .5rem; }
+            .menu-items, .drinks-grid { grid-template-columns: 1fr; }
+            .menu-item-img { height: 180px; } /* larger image on single-col stacks */
+            .yakimeshi-horizontal { flex-direction:column; }
+            .yakimeshi-img { width:100%; height:200px; }
+            .menu-item-content { padding:.9rem; }
+            .menu-item-title { font-size:1rem; }
+            .menu-item-price { font-size:1rem; }
+            .map-container iframe { height:250px; }
+        }
+    </style>
+</head>
+<body>
+    <header>
+        <div class="logo">YUN-YUN</div>
+        <p class="tagline">Auténtica comida japonesa con los sabores más exquisitos y tradicionales. Disfruta de nuestra excelente calidad y servicio.</p>
+    </header>
+    
+    <nav>
+        <ul>
+            <li><a href="#inicio">Inicio</a></li>
+            <li><a href="#menu">Menú</a></li>
+            <li><a href="#bebidas">Bebidas</a></li>
+            <li><a href="#promociones">Promociones</a></li>
+            <li><a href="#ubicacion">Ubicación</a></li>
+            <li><a href="#contacto">Contacto</a></li>
+        </ul>
+    </nav>
+    
+    <div class="container">
+        <section id="inicio" class="about">
+            <h2 class="section-title">Bienvenidos a Yun-Yun</h2>
+            <p>Somos un restaurante especializado en auténtica comida japonesa, donde fusionamos tradición y sabor para ofrecerte una experiencia culinaria única. Nuestros ingredientes son frescos y de la más alta calidad, preparados por chefs expertos en la gastronomía japonesa.</p>
+            <p>¡Ven y descubre por qué somos considerados los mejores en comida japonesa!</p>
+        </section>
+        
+        <section id="menu" class="menu">
+            <h2 class="section-title">Nuestro Menú</h2>
+            
+            <div class="menu-category">
+                <h3 class="category-title">Cocina</h3>
+                <div class="menu-items">
+                    <div class="menu-item">
+                        <div class="menu-item-img" style="background-image: url('https://www.cocinadelirante.com/sites/default/files/images/2024/07/receta-de-birriamen-casero-facil.jpg');"></div>
+                        <div class="menu-item-content">
+                            <h4 class="menu-item-title">Birriamen</h4>
+                            <p class="menu-item-desc">Sábado y domingo. Pasta, espinazo, cilantro y cebolla. (1 litro)</p>
+                            <p class="menu-item-price">$50</p>
+                        </div>
+                    </div>
+                    <div class="menu-item">
+                        <div class="menu-item-img" style="background-image: url('https://kox.s3.wasabisys.com/ssc/ramen/ramen-camaron.jpg')"></div>
+                        <div class="menu-item-content">
+                            <h4 class="menu-item-title">Ramen</h4>
+                            <p class="menu-item-desc">Ramen, carne de puerco, camarón y champiñón tempura, huevo, naruto, espinaca y cebollín.</p>
+                            <p>
+                                <span class="yakimeshi-item-name">Normal</span>
+                                <span class="yakimeshi-item-price">$95</span>
+                            </p>
+                            <p>
+                                <span class="yakimeshi-item-name">Enchilado</span>
+                                <span class="yakimeshi-item-price">$110</span>
+                            </p>
+                        </div>
+                    </div>
+                    <div class="menu-item">
+                        <div class="menu-item-img" style="background-image: url('https://recetasdecocina.elmundo.es/wp-content/uploads/2025/03/sopa-de-miso-1024x683.jpg')"></div>
+                        <div class="menu-item-content">
+                            <h4 class="menu-item-title">Sopa Miso</h4>
+                            <p class="menu-item-desc">Champiñón, tallarín de arroz, pollo, camarón tempura, alga, queso manchego y cebollín.</p>
+                            <p class="menu-item-price">$60</p>
+                        </div>
+                    </div>
+                    <div class="menu-item">
+                        <div class="menu-item-img" style="background-image: url('https://editorialtelevisa.brightspotcdn.com/wp-content/uploads/2020/07/como-hacer-camarones-empanizados-tempura.jpg')"></div>
+                        <div class="menu-item-content">
+                            <h4 class="menu-item-title">Tiras de Camarón/Surimi/Pollo</h4>
+                            <p class="menu-item-desc">Deliciosas tiras empanizadas o tempura.</p>
+                            <p>
+                              <span class="yakimeshi-item-name">1 pza.</span>
+                              <span class="yakimeshi-item-price">$20</span>
+                            </p>
+                            <p>
+                              <span class="yakimeshi-item-name">5 pzas.</span>
+                              <span class="yakimeshi-item-price">$75</span>
+                            </p>
+                            <p>
+                              <span class="yakimeshi-item-name">8 pzas.</span>
+                              <span class="yakimeshi-item-price">$100</span>
+                            </p>
+                        </div>
+                    </div>
+                    <div class="menu-item">
+                        <div class="menu-item-img" style="background-image: url('https://blog.pizcadesabor.com/wp-content/uploads/2021/09/Katsu-de-pollo-2-600x600.jpg')"></div>
+                        <div class="menu-item-content">
+                            <h4 class="menu-item-title">Torikatsu</h4>
+                            <p class="menu-item-desc">Pechuga empanizada rellena de verduras y quesos, acompañado de arroz yakimeshi y/o ensalada.</p>
+                            <p class="menu-item-price">$130</p>
+                        </div>
+                    </div>
+                    <div class="menu-item">
+                        <div class="menu-item-img" style="background-image: url('https://i.ytimg.com/vi/8BlTuimn7t8/hq720.jpg?sqp=-oaymwEhCK4FEIIDSFryq4qpAxMIARUAAAAAGAElAADIQj0AgKJD&rs=AOn4CLCaT7WRK70ca3xoOOv6FhjOonbyZg')"></div>
+                        <div class="menu-item-content">
+                            <h4 class="menu-item-title">Jalapeños</h4>
+                            <p class="menu-item-desc">Chiles jalapeños empanizados y rellenos de queso manchego y philadelphia. (4 pzas)</p>
+                            <p class="menu-item-price">$50</p>
+                        </div>
+                    </div>
+                    <div class="menu-item">
+                        <div class="menu-item-img" style="background-image: url('https:idiglobal.com/static/soda_public/img_6064caa8e4de4987edfc5ded6f67ef29.jpg')"></div>
+                        <div class="menu-item-content">
+                            <h4 class="menu-item-title">Kushiages Takis Fuego</h4>
+                            <p class="menu-item-desc">(2 manchego, 2 Philadelphia)</p>
+                            <p class="menu-item-price">1 pieza          $18</p>
+                            <p class="menu-item-price">Orden (4 pzas.)  $60</p>
+                        </div>
+                    </div>
+                    <div class="menu-item">
+                        <div class="menu-item-img" style="background-image: url('https://images.pexels.com/photos/10599465/pexels-photo-10599465.jpeg?auto=compress&cs=tinysrgb&w=1260&h=750&dpr=1')"></div>
+                        <div class="menu-item-content">
+                            <h4 class="menu-item-title">Papas a la Francesa</h4>
+                            <p class="menu-item-desc">Camarón/Surimi/pollo</p>
+                            <p class="menu-item-price">Medianas 250g   $20</p>
+                            <p class="menu-item-price">Grandes 500g  $75</p>
+                        </div>
+                    </div>
+                    <div class="menu-item">
+                        <div class="menu-item-img" style="background-image: url('httpsexels.com/photos/16240793223870/pexels-photo-16240793223870.jpeg?auto=compress&cs=tinysrgb&w=1260&h=750&dpr=1')"></div>
+                        <div class="menu-item-content">
+                            <h4 class="menu-item-title">Kushiages</h4>
+                            <div class="menu-item-desc-columns">
+                                <div>
+                                    <p class="menu-item-desc">● Manchego</p>
+                                    <p class="menu-item-desc">● Philadelphia</p>
+                                </div>
+                                <div>
+                                    <p class="menu-item-desc">● Plátano macho</p>
+                                    <p class="menu-item-desc">● Combinadas</p>
+                                </div>
+                            </div>
+                            <p class="menu-item-price">1 pieza          $15</p>
+                            <p class="menu-item-price">Orden (4 pzas.)  $50</p>
+                        </div>
+                    </div>
+                    <div class="menu-item">
+                        <div class="menu-item-img" style="background-image: url('data:image64,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')"></div>
+                        <div class="menu-item-content">
+                            <h4 class="menu-item-title">Kushiages</h4>
+                            <div class="menu-item-desc-columns">
+                                <div>
+                                    <p class="menu-item-desc">● Camarón</p>
+                                    <p class="menu-item-desc">● Camarón con queso</p>
+                                    <p class="menu-item-desc">● Surimi</p>
+                                </div>
+                                <div>
+                                    <p class="menu-item-desc">● Surimi con queso</p>
+                                    <p class="menu-item-desc">● Salmón</p>
+                                    <p class="menu-item-desc">● Salmón con queso</p>
+                                </div>
+                            </div>
+                            <p class="menu-item-price">1 pieza          $18</p>
+                            <p class="menu-item-price">Orden (3 pzas.)  $50</p>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        
+            <div class="yakimeshi-horizontal">
+                <div class="yakimeshi-img" style="background-image: url('https://tofuu.getjusto.com/orioneat-local/resized2/ekQXazwb8ttzTdad4-x-2000.webp')"></div>
+                <div class="yakimeshi-content">
+                    <h4 class="yakimeshi-title">Yakimeshi</h4>
+                    <p class="yakimeshi-desc">Con ajonjolí y cebollín 250g aproximadamente.</p>
+                    <div class="yakimeshi-columns">
+                        <div>
+                            <p><span class="yakimeshi-item-name">Gohan (arroz al vapor)</span><span class="yakimeshi-item-price">$35</span></p>
+                            <p><span class="yakimeshi-item-name">Shari (arroz dulce)</span><span class="yakimeshi-item-price">$35</span></p>
+                            <p><span class="yakimeshi-item-name">Soya (frito con soya)</span><span class="yakimeshi-item-price">$35</span></p>
+                            <p><span class="yakimeshi-item-name">Verduras</span><span class="yakimeshi-item-price">$40</span></p>
+                            <p><span class="yakimeshi-item-name">Tampico</span><span class="yakimeshi-item-price">$50</span></p>
+                            <p><span class="yakimeshi-item-name">Atún rojo</span><span class="yakimeshi-item-price">$50</span></p>
+                        </div>
+                        <div>
+                            <p><span class="yakimeshi-item-name">Pulpo</span><span class="yakimeshi-item-price">$50</span></p>
+                            <p><span class="yakimeshi-item-name">Pollo</span><span class="yakimeshi-item-price">$50</span></p>
+                            <p><span class="yakimeshi-item-name">Arrachera</span><span class="yakimeshi-item-price">$60</span></p>
+                            <p><span class="yakimeshi-item-name">Camarón</span><span class="yakimeshi-item-price">$60</span></p>
+                            <p><span class="yakimeshi-item-name">Mixto (pollo, camarón y arrachera)</span><span class="yakimeshi-item-price">$70</span></p>
+                            <p><span class="yakimeshi-item-name">Yakimeshi Yun-Yun (Pollo, Camarón, arrachera, philadelphia, aguacate, chipotle, tampico, ajonjolí y cebollín)</span><span class="yakimeshi-item-price">$90</span></p>
+                        </div>
+                    </div>
+                </div>
+            </div>
+
+            <!-- Inserción: secciones añadidas al menú (colocar después de .yakimeshi-horizontal) -->
+<div class="menu-category">
+    <h3 class="category-title">Rollos Tradicionales</h3>
+    <div class="menu-items">
+        <div class="menu-item">
+            <div class="menu-item-img" style="background-image: url('https://images.pexels.com/photos/46239/sushi-rolls-food-japanese-46239.jpeg');"></div>
+            <div class="menu-item-content">
+                <h4 class="menu-item-title">California (Ajonjolí)</h4>
+                <p class="menu-item-desc">Por fuera ajonjolí. Por dentro: marisco, philadelphia, pepino y aguacate.</p>
+                <p class="menu-item-price">$85</p>
+            </div>
+        </div>
+
+        <div class="menu-item">
+            <div class="menu-item-img" style="background-image: url('https://images.pexels.com/photos/357756/pexels-photo-357756.jpeg');"></div>
+            <div class="menu-item-content">
+                <h4 class="menu-item-title">California (Tampico)</h4>
+                <p class="menu-item-desc">Por fuera tampico. Por dentro: marisco, philadelphia, pepino y aguacate.</p>
+                <p class="menu-item-price">$85</p>
+            </div>
+        </div>
+
+        <div class="menu-item">
+            <div class="menu-item-img" style="background-image: url('https://images.pexels.com/photos/2098084/pexels-photo-2098084.jpeg');"></div>
+            <div class="menu-item-content">
+                <h4 class="menu-item-title">Philadelphia</h4>
+                <p class="menu-item-desc">Por fuera philadelphia y ajonjolí caramelizado. Por dentro: marisco, philadelphia, pepino y aguacate.</p>
+                <p class="menu-item-price">$85</p>
+            </div>
+        </div>
+
+        <div class="menu-item">
+            <div class="menu-item-img" style="background-image: url('https://images.pexels.com/photos/461198/pexels-photo-461198.jpeg');"></div>
+            <div class="menu-item-content">
+                <h4 class="menu-item-title">Panko</h4>
+                <p class="menu-item-desc">Por fuera empanizado. Por dentro: marisco, philadelphia y aguacate.</p>
+                <p class="menu-item-price">$95</p>
+            </div>
+        </div>
+
+        <div class="menu-item">
+            <div class="menu-item-img" style="background-image: url('https://images.pexels.com/photos/704569/pexels-photo-704569.jpeg');"></div>
+            <div class="menu-item-content">
+                <h4 class="menu-item-title">Avokado</h4>
+                <p class="menu-item-desc">Por fuera aguacate. Por dentro: marisco, philadelphia y pepino.</p>
+                <p class="menu-item-price">$90</p>
+            </div>
+        </div>
+
+        <div class="menu-item">
+            <div class="menu-item-img" style="background-image: url('https://images.pexels.com/photos/357743/pexels-photo-357743.jpeg');"></div>
+            <div class="menu-item-content">
+                <h4 class="menu-item-title">Tempura</h4>
+                <p class="menu-item-desc">Por fuera tempura. Por dentro: marisco, philadelphia y aguacate.</p>
+                <p class="menu-item-price">$95</p>
+            </div>
+        </div>
+    </div>
+</div>
+
+<div class="menu-category">
+    <h3 class="category-title">Rollos Especiales</h3>
+    <div class="menu-items">
+        <!-- cada rollo en una tarjeta -->
+        <div class="menu-item">
+            <div class="menu-item-img" style="background-image: url('https://images.pexels.com/photos/1410236/pexels-photo-1410236.jpeg');"></div>
+            <div class="menu-item-content">
+                <h4 class="menu-item-title">Hosomaki</h4>
+                <p class="menu-item-desc">Camarón, pulpo, surimi, tampico, masago, philadelphia, mariscos con philadelphia, manchego, plátano, pepino, fresa, kiwi.</p>
+                <p class="menu-item-price">$50</p>
+            </div>
+        </div>
+
+        <div class="menu-item">
+            <div class="menu-item-img" style="background-image: url('https://images.pexels.com/photos/1640777/pexels-photo-1640777.jpeg');"></div>
+            <div class="menu-item-content">
+                <h4 class="menu-item-title">Sunset</h4>
+                <p class="menu-item-desc">Camarón empanizado o arrachera. Por fuera: mango, aguacate, almendra caramelizada y salsa de anguila. Por dentro: philadelphia, aguacate y coco rallado.</p>
+                <p class="menu-item-price">$110</p>
+            </div>
+        </div>
+
+        <div class="menu-item">
+            <div class="menu-item-img" style="background-image: url('https://images.pexels.com/photos/1389128/pexels-photo-1389128.jpeg');"></div>
+            <div class="menu-item-content">
+                <h4 class="menu-item-title">Kawaii</h4>
+                <p class="menu-item-desc">Por fuera: philadelphia, fresa, kiwi, almendra caramelizada. Por dentro: aguacate, camarón tempura y coco rallado.</p>
+                <p class="menu-item-price">$110</p>
+            </div>
+        </div>
+
+        <div class="menu-item">
+            <div class="menu-item-img" style="background-image: url('https://images.pexels.com/photos/257816/pexels-photo-257816.jpeg');"></div>
+            <div class="menu-item-content">
+                <h4 class="menu-item-title">Spicy</h4>
+                <p class="menu-item-desc">Por fuera: salmón, cebollín, y ajonjolí. Por dentro: pepino, philadelphia y aguacate.</p>
+                <p class="menu-item-price">$110</p>
+            </div>
+        </div>
+
+        <div class="menu-item">
+            <div class="menu-item-img" style="background-image: url('https://images.pexels.com/photos/357756/pexels-photo-357756.jpeg');"></div>
+            <div class="menu-item-content">
+                <h4 class="menu-item-title">Masago</h4>
+                <p class="menu-item-desc">Por fuera: masago. Por dentro: marisco a elegir, aguacate y philadelphia.</p>
+                <p class="menu-item-price">$110</p>
+            </div>
+        </div>
+
+        <div class="menu-item">
+            <div class="menu-item-img" style="background-image: url('https://images.pexels.com/photos/704569/pexels-photo-704569.jpeg');"></div>
+            <div class="menu-item-content">
+                <h4 class="menu-item-title">Rollo Pollo</h4>
+                <p class="menu-item-desc">Por fuera: queso manchego. Por dentro: pollo empanizado, philadelphia y aguacate.</p>
+                <p class="menu-item-price">$95</p>
+            </div>
+        </div>
+
+        <div class="menu-item">
+            <div class="menu-item-img" style="background-image: url('https://images.pexels.com/photos/4023318/pexels-photo-4023318.jpeg');"></div>
+            <div class="menu-item-content">
+                <h4 class="menu-item-title">Mango</h4>
+                <p class="menu-item-desc">Por fuera: mango. Por dentro: surimi, aguacate y philadelphia.</p>
+                <p class="menu-item-price">$95</p>
+            </div>
+        </div>
+
+        <div class="menu-item">
+            <div class="menu-item-img" style="background-image: url('https://images.pexels.com/photos/887751/pexels-photo-887751.jpeg');"></div>
+            <div class="menu-item-content">
+                <h4 class="menu-item-title">Pingo Pingo</h4>
+                <p class="menu-item-desc">Por fuera: alga, tampico, cebollín, ajonjolí y salsa de anguila. Por dentro: camarón tempura, queso manchego con chipotle y ejote tempura.</p>
+                <p class="menu-item-price">$95</p>
+            </div>
+        </div>
+
+        <div class="menu-item">
+            <div class="menu-item-img" style="background-image: url('https://images.pexels.com/photos/257816/pexels-photo-257816.jpeg');"></div>
+            <div class="menu-item-content">
+                <h4 class="menu-item-title">Takis Fuego</h4>
+                <p class="menu-item-desc">Por fuera: Takis Fuego. Por dentro: camarón, philadelphia, aguacate y pepino.</p>
+                <p class="menu-item-price">$95</p>
+            </div>
+        </div>
+
+        <div class="menu-item">
+            <div class="menu-item-img" style="background-image: url('https://images.pexels.com/photos/1640777/pexels-photo-1640777.jpeg');"></div>
+            <div class="menu-item-content">
+                <h4 class="menu-item-title">Banana</h4>
+                <p class="menu-item-desc">Por fuera: plátano macho y salsa de anguila. Por dentro: philadelphia, cangrejo empanizado y aguacate.</p>
+                <p class="menu-item-price">$90</p>
+            </div>
+        </div>
+
+        <div class="menu-item">
+            <div class="menu-item-img" style="background-image: url('https://images.pexels.com/photos/2098084/pexels-photo-2098084.jpeg');"></div>
+            <div class="menu-item-content">
+                <h4 class="menu-item-title">Kakiague</h4>
+                <p class="menu-item-desc">Por fuera: kakiague y salsa de anguila. Por dentro: surimi, aguacate y philadelphia.</p>
+                <p class="menu-item-price">$90</p>
+            </div>
+        </div>
+
+        <div class="menu-item">
+            <div class="menu-item-img" style="background-image: url('https://images.pexels.com/photos/46239/sushi-rolls-food-japanese-46239.jpeg');"></div>
+            <div class="menu-item-content">
+                <h4 class="menu-item-title">Rollo Toro</h4>
+                <p class="menu-item-desc">Por fuera: atún rojo y salsa chipotle. Por dentro: aguacate, jitomate, philadelphia y pepino.</p>
+                <p class="menu-item-price">$100</p>
+            </div>
+        </div>
+
+        <div class="menu-item">
+            <div class="menu-item-img" style="background-image: url('https://images.pexels.com/photos/1389128/pexels-photo-1389128.jpeg');"></div>
+            <div class="menu-item-content">
+                <h4 class="menu-item-title">Rollo Stunt</h4>
+                <p class="menu-item-desc">Por fuera: ajonjolí y aderezo de cilantro. Por dentro: atún rojo, aguacate, philadelphia, manchego y pepino.</p>
+                <p class="menu-item-price">$100</p>
+            </div>
+        </div>
+    </div>
+</div>
+
+<div class="menu-category">
+    <h3 class="category-title">Charolas</h3>
+    <div class="menu-items">
+        <div class="menu-item">
+            <div class="menu-item-img" style="background-image: url('https://images.pexels.com/photos/3683106/pexels-photo-3683106.jpeg');"></div>
+            <div class="menu-item-content">
+                <h4 class="menu-item-title">Mediana Normal</h4>
+                <p class="menu-item-desc">Rollo Panko, Rollo Avokado, Rollo Philadelphia, Rollo California, 2 Kushiages de manchego, 2 Kushiages de plátano.</p>
+                <p class="menu-item-price">$380</p>
+            </div>
+        </div>
+
+        <div class="menu-item">
+            <div class="menu-item-img" style="background-image: url('https://images.pexels.com/photos/1437267/pexels-photo-1437267.jpeg');"></div>
+            <div class="menu-item-content">
+                <h4 class="menu-item-title">Mediana Especial</h4>
+                <p class="menu-item-desc">Rollo Sunset, Rollo Kawaii, Rollo Banana, Rollo Takis Fuego, Orden de kushiages (a elegir).</p>
+                <p class="menu-item-price">$400</p>
+            </div>
+        </div>
+
+        <div class="menu-item">
+            <div class="menu-item-img" style="background-image: url('https://images.pexels.com/photos/3683106/pexels-photo-3683106.jpeg');"></div>
+            <div class="menu-item-content">
+                <h4 class="menu-item-title">Grande</h4>
+                <p class="menu-item-desc">3 Rollos tradicionales, Orden de 5 Kushiages de manchego.</p>
+                <p class="menu-item-price">$550</p>
+            </div>
+        </div>
+
+        <div class="menu-item">
+            <div class="menu-item-img" style="background-image: url('https://images.pexels.com/photos/1437267/pexels-photo-1437267.jpeg');"></div>
+            <div class="menu-item-content">
+                <h4 class="menu-item-title">Grande Especial</h4>
+                <p class="menu-item-desc">7 Rollos especiales y/o tradicionales (a elegir), Orden de kushiages (a elegir), Orden de papas fritas.</p>
+                <p class="menu-item-price">$700</p>
+            </div>
+        </div>
+    </div>
+</div>
+
+<div class="menu-category">
+    <h3 class="category-title">Otros Platillos</h3>
+
+    <h4 class="category-title" style="font-size:1.25rem; margin-top:1rem;">Hamburguesas Sushi</h4>
+    <div class="menu-items">
+        <div class="menu-item">
+            <div class="menu-item-img" style="background-image: url('https://images.pexels.com/photos/376464/pexels-photo-376464.jpeg');"></div>
+            <div class="menu-item-content">
+                <h4 class="menu-item-title">Hamb. de Camarón</h4>
+                <p class="menu-item-desc">Acompañada de papas. Base de arroz crujiente, ajonjolí, aguacate, philadelphia, pepino y marisco a elegir.</p>
+                <p class="menu-item-price">$100</p>
+            </div>
+        </div>
+
+        <div class="menu-item">
+            <div class="menu-item-img" style="background-image: url('https://images.pexels.com/photos/461198/pexels-photo-461198.jpeg');"></div>
+            <div class="menu-item-content">
+                <h4 class="menu-item-title">Hamb. de Atún Rojo</h4>
+                <p class="menu-item-desc">Acompañada de papas. Base de arroz crujiente, ajonjolí, aguacate, philadelphia, pepino y marisco a elegir.</p>
+                <p class="menu-item-price">$100</p>
+            </div>
+        </div>
+
+        <div class="menu-item">
+            <div class="menu-item-img" style="background-image: url('https://images.pexels.com/photos/1437267/pexels-photo-1437267.jpeg');"></div>
+            <div class="menu-item-content">
+                <h4 class="menu-item-title">Hamb. de Arrachera</h4>
+                <p class="menu-item-desc">Acompañada de papas. Base de arroz crujiente, ajonjolí, aguacate, philadelphia, pepino y marisco a elegir.</p>
+                <p class="menu-item-price">$120</p>
+            </div>
+        </div>
+
+        <div class="menu-item">
+            <div class="menu-item-img" style="background-image: url('https://images.pexels.com/photos/376464/pexels-photo-376464.jpeg');"></div>
+            <div class="menu-item-content">
+                <h4 class="menu-item-title">Hamb. de Salmón</h4>
+                <p class="menu-item-desc">Acompañada de papas. Base de arroz crujiente, ajonjolí, aguacate, philadelphia, pepino y marisco a elegir.</p>
+                <p class="menu-item-price">$120</p>
+            </div>
+        </div>
+    </div>
+
+    <h4 class="category-title" style="font-size:1.25rem; margin-top:1rem;">Sashimi</h4>
+    <div class="menu-items">
+        <div class="menu-item">
+            <div class="menu-item-img" style="background-image: url('https://images.pexels.com/photos/13759357/pexels-photo-13759357.jpeg');"></div>
+            <div class="menu-item-content">
+                <h4 class="menu-item-title">Sashimi 150gr</h4>
+                <p class="menu-item-desc">Corte delgado o grueso. Opciones: A la plancha.</p>
+                <p class="menu-item-price">$90</p>
+            </div>
+        </div>
+        <div class="menu-item">
+            <div class="menu-item-img" style="background-image: url('https://images.pexels.com/photos/357756/pexels-photo-357756.jpeg');"></div>
+            <div class="menu-item-content">
+                <h4 class="menu-item-title">Sashimi Camarón</h4>
+                <p class="menu-item-price">$100</p>
+            </div>
+        </div>
+        <div class="menu-item">
+            <div class="menu-item-img" style="background-image: url('https://images.pexels.com/photos/2098084/pexels-photo-2098084.jpeg');"></div>
+            <div class="menu-item-content">
+                <h4 class="menu-item-title">Sashimi Atún</h4>
+                <p class="menu-item-price">$100</p>
+            </div>
+        </div>
+        <div class="menu-item">
+            <div class="menu-item-img" style="background-image: url('https://images.pexels.com/photos/461198/pexels-photo-461198.jpeg');"></div>
+            <div class="menu-item-content">
+                <h4 class="menu-item-title">Sashimi Pulpo</h4>
+                <p class="menu-item-price">$100</p>
+            </div>
+        </div>
+        <div class="menu-item">
+            <div class="menu-item-img" style="background-image: url('https://images.pexels.com/photos/16240793223870/pexels-photo-16240793223870.jpeg');"></div>
+            <div class="menu-item-content">
+                <h4 class="menu-item-title">Sashimi Salmón</h4>
+                <p class="menu-item-price">$120</p>
+            </div>
+        </div>
+    </div>
+
+    <h4 class="category-title" style="font-size:1.25rem; margin-top:1rem;">Temaki</h4>
+    <div class="menu-items">
+        <div class="menu-item"><div class="menu-item-img" style="background-image: url('https://images.pexels.com/photos/704569/pexels-photo-704569.jpeg');"></div><div class="menu-item-content"><h4 class="menu-item-title">Temaki Verduras</h4><p class="menu-item-price">$35</p></div></div>
+        <div class="menu-item"><div class="menu-item-img" style="background-image: url('https://images.pexels.com/photos/357743/pexels-photo-357743.jpeg');"></div><div class="menu-item-content"><h4 class="menu-item-title">Temaki Camarón</h4><p class="menu-item-price">$40</p></div></div>
+        <div class="menu-item"><div class="menu-item-img" style="background-image: url('https://images.pexels.com/photos/357756/pexels-photo-357756.jpeg');"></div><div class="menu-item-content"><h4 class="menu-item-title">Temaki Tampico</h4><p class="menu-item-price">$40</p></div></div>
+        <div class="menu-item"><div class="menu-item-img" style="background-image: url('https://images.pexels.com/photos/2098084/pexels-photo-2098084.jpeg');"></div><div class="menu-item-content"><h4 class="menu-item-title">Temaki Atún</h4><p class="menu-item-price">$40</p></div></div>
+        <div class="menu-item"><div class="menu-item-img" style="background-image: url('https://images.pexels.com/photos/461198/pexels-photo-461198.jpeg');"></div><div class="menu-item-content"><h4 class="menu-item-title">Temaki Pulpo</h4><p class="menu-item-price">$40</p></div></div>
+        <div class="menu-item"><div class="menu-item-img" style="background-image: url('https://images.pexels.com/photos/1437267/pexels-photo-1437267.jpeg');"></div><div class="menu-item-content"><h4 class="menu-item-title">Temaki Arrachera</h4><p class="menu-item-price">$50</p></div></div>
+        <div class="menu-item"><div class="menu-item-img" style="background-image: url('https://images.pexels.com/photos/376464/pexels-photo-376464.jpeg');"></div><div class="menu-item-content"><h4 class="menu-item-title">Temaki Salmón</h4><p class="menu-item-price">$50</p></div></div>
+    </div>
+
+    <h4 class="category-title" style="font-size:1.25rem; margin-top:1rem;">Nigiri</h4>
+    <div class="menu-items">
+        <div class="menu-item"><div class="menu-item-img" style="background-image: url('https://images.pexels.com/photos/10599465/pexels-photo-10599465.jpeg');"></div><div class="menu-item-content"><h4 class="menu-item-title">Promoción</h4><p class="menu-item-desc">5x $100 (Mínimo 5 piezas del mismo tipo)</p></div></div>
+        <div class="menu-item"><div class="menu-item-img" style="background-image: url('https://images.pexels.com/photos/46239/sushi-rolls-food-japanese-46239.jpeg');"></div><div class="menu-item-content"><h4 class="menu-item-title">Nigiri Camarón</h4><p class="menu-item-price">$25 / pieza</p></div></div>
+        <div class="menu-item"><div class="menu-item-img" style="background-image: url('https://images.pexels.com/photos/357756/pexels-photo-357756.jpeg');"></div><div class="menu-item-content"><h4 class="menu-item-title">Nigiri Surimi</h4><p class="menu-item-price">$25 / pieza</p></div></div>
+        <div class="menu-item"><div class="menu-item-img" style="background-image: url('https://images.pexels.com/photos/2098084/pexels-photo-2098084.jpeg');"></div><div class="menu-item-content"><h4 class="menu-item-title">Nigiri Tampico</h4><p class="menu-item-price">$25 / pieza</p></div></div>
+        <div class="menu-item"><div class="menu-item-img" style="background-image: url('https://images.pexels.com/photos/461198/pexels-photo-461198.jpeg');"></div><div class="menu-item-content"><h4 class="menu-item-title">Nigiri Res</h4><p class="menu-item-price">$25 / pieza</p></div></div>
+        <div class="menu-item"><div class="menu-item-img" style="background-image: url('https://images.pexels.com/photos/16240793223870/pexels-photo-16240793223870.jpeg');"></div><div class="menu-item-content"><h4 class="menu-item-title">Nigiri Pulpo</h4><p class="menu-item-price">$30 / pieza</p></div></div>
+        <div class="menu-item"><div class="menu-item-img" style="background-image: url('https://images.pexels.com/photos/704569/pexels-photo-704569.jpeg');"></div><div class="menu-item-content"><h4 class="menu-item-title">Nigiri Salmón</h4><p class="menu-item-price">$35 / pieza</p></div></div>
+        <div class="menu-item"><div class="menu-item-img" style="background-image: url('https://images.pexels.com/photos/887751/pexels-photo-887751.jpeg');"></div><div class="menu-item-content"><h4 class="menu-item-title">Nigiri Masago</h4><p class="menu-item-price">$35 / pieza</p></div></div>
+    </div>
+
+    <h4 class="category-title" style="font-size:1.25rem; margin-top:1rem;">Temari</h4>
+    <div class="menu-items">
+        <div class="menu-item"><div class="menu-item-img" style="background-image: url('https://images.pexels.com/photos/1437267/pexels-photo-1437267.jpeg');"></div><div class="menu-item-content"><h4 class="menu-item-title">Temari Aguacate</h4><p class="menu-item-price">$40</p></div></div>
+        <div class="menu-item"><div class="menu-item-img" style="background-image: url('https://images.pexels.com/photos/376464/pexels-photo-376464.jpeg');"></div><div class="menu-item-content"><h4 class="menu-item-title">Temari Res</h4><p class="menu-item-price">$40</p></div></div>
+        <div class="menu-item"><div class="menu-item-img" style="background-image: url('https://images.pexels.com/photos/357756/pexels-photo-357756.jpeg');"></div><div class="menu-item-content"><h4 class="menu-item-title">Temari Camarón</h4><p class="menu-item-price">$40</p></div></div>
+        <div class="menu-item"><div class="menu-item-img" style="background-image: url('https://images.pexels.com/photos/2098084/pexels-photo-2098084.jpeg');"></div><div class="menu-item-content"><h4 class="menu-item-title">Temari Tampico</h4><p class="menu-item-price">$40</p></div></div>
+        <div class="menu-item"><div class="menu-item-img" style="background-image: url('https://images.pexels.com/photos/461198/pexels-photo-461198.jpeg');"></div><div class="menu-item-content"><h4 class="menu-item-title">Temari Empanizado</h4><p class="menu-item-price">$40</p></div></div>
+        <div class="menu-item"><div class="menu-item-img" style="background-image: url('https://images.pexels.com/photos/704569/pexels-photo-704569.jpeg');"></div><div class="menu-item-content"><h4 class="menu-item-title">Temari Salmón</h4><p class="menu-item-price">$50</p></div></div>
+    </div>
+
+    <h4 class="category-title" style="font-size:1.25rem; margin-top:1rem;">Onigiris</h4>
+    <div class="menu-items">
+        <!-- Dulces -->
+        <div class="menu-item"><div class="menu-item-img" style="background-image: url('https://images.pexels.com/photos/704569/pexels-photo-704569.jpeg');"></div><div class="menu-item-content"><h4 class="menu-item-title">Onigiri Nutella</h4><p class="menu-item-price">$30</p></div></div>
+        <div class="menu-item"><div class="menu-item-img" style="background-image: url('https://images.pexels.com/photos/376464/pexels-photo-376464.jpeg');"></div><div class="menu-item-content"><h4 class="menu-item-title">Onigiri Mermelada Fresa</h4><p class="menu-item-price">$30</p></div></div>
+        <div class="menu-item"><div class="menu-item-img" style="background-image: url('https://images.pexels.com/photos/1437267/pexels-photo-1437267.jpeg');"></div><div class="menu-item-content"><h4 class="menu-item-title">Onigiri Mermelada Zarzamora</h4><p class="menu-item-price">$30</p></div></div>
+        <div class="menu-item"><div class="menu-item-img" style="background-image: url('https://images.pexels.com/photos/46239/sushi-rolls-food-japanese-46239.jpeg');"></div><div class="menu-item-content"><h4 class="menu-item-title">Onigiri Lechera</h4><p class="menu-item-price">$30</p></div></div>
+        <div class="menu-item"><div class="menu-item-img" style="background-image: url('https://images.pexels.com/photos/46239/sushi-rolls-food-japanese-46239.jpeg');"></div><div class="menu-item-content"><h4 class="menu-item-title">Onigiri Lechera con mazapán</h4><p class="menu-item-price">$30</p></div></div>
+        <div class="menu-item"><div class="menu-item-img" style="background-image: url('https://images.pexels.com/photos/376464/pexels-photo-376464.jpeg');"></div><div class="menu-item-content"><h4 class="menu-item-title">Onigiri Solo arroz (sin queso)</h4><p class="menu-item-price">$30</p></div></div>
+
+        <!-- Salados -->
+        <div class="menu-item"><div class="menu-item-img" style="background-image: url('https://images.pexels.com/photos/357756/pexels-photo-357756.jpeg');"></div><div class="menu-item-content"><h4 class="menu-item-title">Onigiri Camarón</h4><p class="menu-item-desc">Aguacate y pepino por fuera</p><p class="menu-item-price">$35</p></div></div>
+        <div class="menu-item"><div class="menu-item-img" style="background-image: url('https://images.pexels.com/photos/2098084/pexels-photo-2098084.jpeg');"></div><div class="menu-item-content"><h4 class="menu-item-title">Onigiri Res</h4><p class="menu-item-price">$35</p></div></div>
+        <div class="menu-item"><div class="menu-item-img" style="background-image: url('https://images.pexels.com/photos/461198/pexels-photo-461198.jpeg');"></div><div class="menu-item-content"><h4 class="menu-item-title">Onigiri Pollo</h4><p class="menu-item-price">$35</p></div></div>
+        <div class="menu-item"><div class="menu-item-img" style="background-image: url('https://images.pexels.com/photos/704569/pexels-photo-704569.jpeg');"></div><div class="menu-item-content"><h4 class="menu-item-title">Onigiri Atún rojo</h4><p class="menu-item-price">$35</p></div></div>
+        <div class="menu-item"><div class="menu-item-img" style="background-image: url('https://images.pexels.com/photos/46239/sushi-rolls-food-japanese-46239.jpeg');"></div><div class="menu-item-content"><h4 class="menu-item-title">Onigiri Surimi</h4><p class="menu-item-price">$35</p></div></div>
+        <div class="menu-item"><div class="menu-item-img" style="background-image: url('https://images.pexels.com/photos/357743/pexels-photo-357743.jpeg');"></div><div class="menu-item-content"><h4 class="menu-item-title">Onigiri Tampico</h4><p class="menu-item-price">$35</p></div></div>
+        <div class="menu-item"><div class="menu-item-img" style="background-image: url('https://images.pexels.com/photos/887751/pexels-photo-887751.jpeg');"></div><div class="menu-item-content"><h4 class="menu-item-title">Onigiri Manchego</h4><p class="menu-item-price">$35</p></div></div>
+        <div class="menu-item"><div class="menu-item-img" style="background-image: url('https://images.pexels.com/photos/16240793223870/pexels-photo-16240793223870.jpeg');"></div><div class="menu-item-content"><h4 class="menu-item-title">Onigiri Pulpo</h4><p class="menu-item-price">$40</p></div></div>
+        <div class="menu-item"><div class="menu-item-img" style="background-image: url('https://images.pexels.com/photos/2098084/pexels-photo-2098084.jpeg');"></div><div class="menu-item-content"><h4 class="menu-item-title">Onigiri Salmón</h4><p class="menu-item-price">$40</p></div></div>
+    </div>
+
+    <h4 class="category-title" style="font-size:1.25rem; margin-top:1rem;">Pastel de Sushi</h4>
+    <div class="menu-items">
+        <div class="menu-item"><div class="menu-item-img" style="background-image: url('https://images.pexels.com/photos/461198/pexels-photo-461198.jpeg');"></div><div class="menu-item-content"><h4 class="menu-item-title">Pastel de Sushi Fruto</h4><p class="menu-item-desc">Grande o trío. Con philadelphia, aguacate, pepino, arroz, queso manchego, mermelada de fresa, pimienta y limón. Relleno de chocolate líquido.</p><p class="menu-item-price">$50</p></div></div>
+        <div class="menu-item"><div class="menu-item-img" style="background-image: url('https://images.pexels.com/photos/376464/pexels-photo-376464.jpeg');"></div><div class="menu-item-content"><h4 class="menu-item-title">Pastel de Sushi Camarón</h4><p class="menu-item-price">$60</p></div></div>
+        <div class="menu-item"><div class="menu-item-img" style="background-image: url('https://images.pexels.com/photos/1437267/pexels-photo-1437267.jpeg');"></div><div class="menu-item-content"><h4 class="menu-item-title">Pastel de Sushi Surimi</h4><p class="menu-item-price">$60</p></div></div>
+        <div class="menu-item"><div class="menu-item-img" style="background-image: url('https://images.pexels.com/photos/16240793223870/pexels-photo-16240793223870.jpeg');"></div><div class="menu-item-content"><h4 class="menu-item-title">Pastel de Sushi Salmón</h4><p class="menu-item-price">$70</p></div></div>
+    </div>
+</div>
+
+<div class="menu-category">
+    <h3 class="category-title">Ensaladas y Postres</h3>
+    <div class="menu-items">
+        <div class="menu-item">
+            <div class="menu-item-img" style="background-image: url('https://images.pexels.com/photos/1640777/pexels-photo-1640777.jpeg');"></div>
+            <div class="menu-item-content">
+                <h4 class="menu-item-title">Dulce Tentación (Ensalada)</h4>
+                <p class="menu-item-desc">Lechuga y espinaca, durazno, queso doble crema, almendra caramelizada, manzana y zanahoria rallada.</p>
+                <p class="menu-item-price">$70</p>
+            </div>
+        </div>
+
+        <div class="menu-item">
+            <div class="menu-item-img" style="background-image: url('https://images.pexels.com/photos/3683106/pexels-photo-3683106.jpeg');"></div>
+            <div class="menu-item-content">
+                <h4 class="menu-item-title">Mundo del Queso (Ensalada)</h4>
+                <p class="menu-item-desc">Lechuga, espinaca, jamón de pavo, jitomate cherry, queso panela, queso manchego, philadelphia cubierto de ajonjolí y pepino.</p>
+                <p class="menu-item-price">$70</p>
+            </div>
+        </div>
+
+        <div class="menu-item">
+            <div class="menu-item-img" style="background-image: url('https://images.pexels.com/photos/704569/pexels-photo-704569.jpeg');"></div>
+            <div class="menu-item-content">
+                <h4 class="menu-item-title">Italiana (Ensalada)</h4>
+                <p class="menu-item-desc">Lechuga, espinaca, pasta de tornillo, queso panela, jamón, finas hierbas, jitomate cherry y aguacate, queso parmesano.</p>
+                <p class="menu-item-price">$75</p>
+            </div>
+        </div>
+
+        <div class="menu-item">
+            <div class="menu-item-img" style="background-image: url('https://images.pexels.com/photos/10599465/pexels-photo-10599465.jpeg');"></div>
+            <div class="menu-item-content">
+                <h4 class="menu-item-title">Helado Tempura (Postre)</h4>
+                <p class="menu-item-desc">Una bola de helado frito, chocolate derretido, almendra caramelizada y fruta de temporada. Sabores: Chocolate, Vainilla, Fresa, Napolitano, Galleta.</p>
+                <p class="menu-item-price">$50</p>
+            </div>
+        </div>
+    </div>
+</div>
+
+<div class="menu-category">
+    <h3 class="category-title">Extras</h3>
+    <div class="drinks-grid">
+        <div class="drink-item">
+            <h4 class="drink-name">Huevo</h4>
+            <p class="drink-price">$10</p>
+        </div>
+        <div class="drink-item">
+            <h4 class="drink-name">Chipotle</h4>
+            <p class="drink-price">$20</p>
+        </div>
+        <div class="drink-item">
+            <h4 class="drink-name">Tampico</h4>
+            <p class="drink-price">$20</p>
+        </div>
+        <div class="drink-item">
+            <h4 class="drink-name">Chiles toreados</h4>
+            <p class="drink-price">$15</p>
+        </div>
+        <div class="drink-item">
+            <h4 class="drink-name">Aguacate</h4>
+            <p class="drink-price">$20</p>
+        </div>
+        <div class="drink-item">
+            <h4 class="drink-name">Salsa agridulce</h4>
+            <p class="drink-price">$10</p>
+        </div>
+        <div class="drink-item">
+            <h4 class="drink-name">Empanizado</h4>
+            <p class="drink-price">$10</p>
+        </div>
+        <div class="drink-item">
+            <h4 class="drink-name">Sriracha</h4>
+            <p class="drink-price">$20</p>
+        </div>
+    </div>
+</div>
+
+<!-- Fin de inserción -->
+        </section>
+        
+        <section id="bebidas" class="menu-category">
+            <h2 class="section-title">Bebidas</h2>
+            <div class="drinks-grid">
+                <div class="drink-item">
+                    <h4 class="drink-name">Coca Cola</h4>
+                    <p>Lata 355ml, PET 600ml, Vidrio 355ml</p>
+                    <p class="drink-price">$20 - $25</p>
+                </div>
+                
+                <div class="drink-item">
+                    <h4 class="drink-name">Arizona</h4>
+                    <p>680ml o 460ml. Sabores: Kiwi-fresa, Sandía, Mango</p>
+                    <p class="drink-price">$25</p>
+                </div>
+                
+                <div class="drink-item">
+                    <h4 class="drink-name">Refrescos Varios</h4>
+                    <p>Fanta, Fresca, Sprite, Sidral Mundet, Sangría</p>
+                    <p class="drink-price">$20 - $25</p>
+                </div>
+                
+                <div class="drink-item">
+                    <h4 class="drink-name">Aguas</h4>
+                    <p>Ciel Mineral 355ml, Agua natural 600ml, Senzao 600ml</p>
+                    <p class="drink-price">$15 - $25</p>
+                </div>
+                
+                <div class="drink-item">
+                    <h4 class="drink-name">Agua de Sabor</h4>
+                    <p>Horchata, Jamaica, Tamarindo, Mango (1/2 L)</p>
+                    <p class="drink-price">$15</p>
+                </div>
+                
+                <div class="drink-item">
+                    <h4 class="drink-name">Calpis</h4>
+                    <p>Natural o Mineral. 500ml o 1 Litro</p>
+                    <p class="drink-price">$25 - $70</p>
+                </div>
+            </div>
+        </section>
+        
+        <section id="promociones" class="promo-banner">
+            <div class="promo-intro">
+                <div class="promo-title">¡Promociones Especiales!</div>
+            </div>
+
+            <div class="promo-grid">
+                <div class="promo-card">
+                    <div class="promo-icon"><i class="fas fa-bowl-rice"></i></div>
+                    <div class="promo-body">
+                        <div class="promo-title-sm">Martes Yakimeshi 2x1</div>
+                        <div class="promo-text">Compra una porción de Yakimeshi y llévate otra gratis. Aplica para porciones iguales (excepto Yun-Yun).</div>
+                        <div class="promo-meta">
+                            <small class="promo-time">Martes · 11:00 - 15:00</small>
+                            <span class="promo-badge">2x1</span>
+                        </div>
+                    </div>
+                </div>
+
+                <div class="promo-card">
+                    <div class="promo-icon"><i class="fas fa-sushi"></i></div>
+                    <div class="promo-body">
+                        <div class="promo-title-sm">Lunes 2 rollos $160</div>
+                        <div class="promo-text">Selecciona cualquier par de rollos tradicionales por $160. Perfecto para compartir.</div>
+                        <div class="promo-meta">
+                            <small class="promo-time">Lunes · 11:00 - 15:00</small>
+                            <span class="promo-badge">Ahorra</span>
+                        </div>
+                    </div>
+                </div>
+
+                <div class="promo-card">
+                    <div class="promo-icon"><i class="fas fa-calendar-check"></i></div>
+                    <div class="promo-body">
+                        <div class="promo-title-sm">Miér. & Vie. 3x2</div>
+                        <div class="promo-text">Llévate 3 rollos y paga solo 2. Aplican combinaciones entre tradicionales y seleccionados.</div>
+                        <div class="promo-meta">
+                            <small class="promo-time">Miércoles y Viernes · 11:00 - 15:00</small>
+                            <span class="promo-badge">3x2</span>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </section>
+        
+        <section id="ubicacion" class="location">
+            <h2 class="section-title">Nuestra Ubicación</h2>
+            <p>Ven a visitarnos y disfruta de la mejor comida japonesa en un ambiente agradable y acogedor.</p>
+            
+            <div class="map-container">
+                <iframe src="https://maps.google.com/maps?q=19.272117,-98.997842&z=17&output=embed" allowfullscreen="" loading="lazy"></iframe>
+            </div>
+        </section>
+    </div>
+    
+    <footer id="contacto">
+        <h3>Yun-Yun - Comida Japonesa</h3>
+        <p>Horario: Lunes a Domingo 11:00 AM - 9:00 PM</p>
+        <p>Teléfono: (123) 456-7890</p>
+        
+        <div class="social-icons">
+            <a href="#"><i class="fab fa-facebook"></i></a>
+            <a href="#"><i class="fab fa-instagram"></i></a>
+            <a href="#"><i class="fab fa-whatsapp"></i></a>
+        </div>
+        
+        <p>&copy; 2023 Yun-Yun. Todos los derechos reservados.</p>
+    </footer>
+</body>
+</html>
+</body>
+</html>
