@@ -375,37 +375,29 @@
 
         .yakimeshi-columns p {
             display: flex;
-            justify-content: space-between;
             align-items: center;
-            position: relative;
-            padding-left: 1.2em;
-            margin-bottom: 0.5rem;
-            font-size: 1rem;
-            gap: 1em;
-        }
-
-        .yakimeshi-columns p::before {
-            content: "•";
-            position: absolute;
-            left: 0;
-            color: var(--color-primary);
-            font-size: 1em;
-            line-height: 1;
+            justify-content: space-between; /* fuerza separación */
+            gap: .75rem;
+            padding: .45rem .6rem;
+            margin: 0 0 .5rem 0;
+            width: 100%;
+            background: transparent; /* evita que parezca un cuadro */
+            white-space: normal;
         }
 
         .yakimeshi-item-name {
             flex: 1 1 auto;
+            margin-right: .6rem;
             color: #333;
-            margin-right: 1em;
         }
 
         .yakimeshi-item-price {
             flex: 0 0 auto;
-            color: var(--color-primary);
-            font-weight: bold;
+            margin-left: .6rem;
             min-width: 3.5em;
             text-align: right;
-            margin-left: 1em;
+            color: var(--color-primary);
+            font-weight: 700;
         }
         
         @media (max-width: 768px) {
@@ -684,12 +676,12 @@
                    
                         <div class="yakimeshi-columns">
                             <div>
-                                <p><span class="yakimeshi-item-name">Pulpo</span><span class="yakimeshi-item-price">$50</span></p>
-                                <p><span class="yakimeshi-item-name">Pollo</span><span class="yakimeshi-item-price">$50</span></p>
-                                <p><span class="yakimeshi-item-name">Arrachera</span><span class="yakimeshi-item-price">$60</span></p>
-                                <p><span class="yakimeshi-item-name">Camarón</span><span class="yakimeshi-item-price">$60</span></p>
-                                <p><span class="yakimeshi-item-name">Mixto (pollo, camarón y arrachera)</span><span class="yakimeshi-item-price">$70</span></p>
-                                <p><span class="yakimeshi-item-name">Yakimeshi Yun-Yun (especial)</span><span class="yakimeshi-item-price">$90</span></p>
+                                <p><span class="yakimeshi-item-name">Pulpo</span>     <span class="yakimeshi-item-price">$50 </span></p>
+                                <p><span class="yakimeshi-item-name">Pollo</span>     <span class="yakimeshi-item-price">$50 </span></p>
+                                <p><span class="yakimeshi-item-name">Arrachera</span>  <span class="yakimeshi-item-price">$60 </span></p>
+                                <p><span class="yakimeshi-item-name">Camarón</span>    <span class="yakimeshi-item-price">$60 </span></p>
+                                <p><span class="yakimeshi-item-name">Mixto (pollo, camarón y arrachera)</span>  <span class="yakimeshi-item-price">$70 </span></p>
+                                <p><span class="yakimeshi-item-name">Yakimeshi Yun-Yun (especial)</span><span class="yakimeshi-item-price">$90 </span></p>
                             </div>
                         </div>
                     </div>
